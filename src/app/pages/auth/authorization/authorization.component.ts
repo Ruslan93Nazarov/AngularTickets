@@ -28,14 +28,22 @@ export class AuthorizationComponent implements OnInit {
   onAuth(ev: Event): boolean {
     const authUser: IUser = {
       login: this.login,
-      psw: this.login,
+      psw: this.psw,
     };
     if (this.authService.checkUser(authUser)) {
-      this.messageService.add({
-        severity: 'success',
-        detail: 'successful login',
-      });
-      return true;
+      if (this.authService.checkUserPsw(authUser)) {
+        this.messageService.add({
+          severity: 'success',
+          detail: 'successful login',
+        });
+        return true;
+      } else {
+        this.messageService.add({
+          severity: 'error',
+          detail: 'Password mismatch',
+        });
+        return false;
+      }
     }
     this.messageService.add({
       severity: 'error',

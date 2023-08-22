@@ -5,33 +5,27 @@ import { IUser } from '../../models/users';
   providedIn: 'root',
 })
 export class AuthService {
-  private userStorage: IUser[] = [];
-
   constructor() {}
 
-  checkUser(user: IUser): string | undefined {
-    const isUserExists: IUser | undefined = this.userStorage.find(
-      (someUser: IUser): boolean => someUser.login === user.login
+  checkUser(userInStorage: IUser): boolean {
+    const isLocalStorageUsers: string | null = localStorage.getItem(
+      'user ' + userInStorage.login
     );
-    if (isUserExists) {
-      return (isUserExists.psw = user.psw);
-    }
-    return;
-  }
 
-  setUser(user: IUser): void {
-    const isUserExists: IUser | undefined = this.userStorage.find(
-      (someUser: IUser): boolean => someUser.login === user.login
-    );
-    if (user?.login && !isUserExists) {
-      this.userStorage.push(user);
+    if (isLocalStorageUsers !== null) {
+      return JSON.parse(isLocalStorageUsers);
+    } else {
+      return false;
     }
   }
-
-  isUserExists(user: IUser): boolean {
-    const isUserExists: IUser | undefined = this.userStorage.find(
-      (someUser: IUser) => (someUser.login = user.login)
+  checkUserPsw(userInStorage: IUser): boolean {
+    const isLocalStorageUsers: string | null = localStorage.getItem(
+      'user ' + userInStorage.login
     );
-    return !!isUserExists;
+    if (isLocalStorageUsers !== null) {
+      const isUserObj = JSON.parse(isLocalStorageUsers);
+      return isUserObj.psw === userInStorage.psw;
+    }
+    return false;
   }
 }

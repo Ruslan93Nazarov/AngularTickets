@@ -37,33 +37,17 @@ export class RegistrationComponent {
       email: this.email,
     };
 
-    const isLocalStorageUsers: string | null = localStorage.getItem('user');
+    const isLocalStorageUser: string | null = localStorage.getItem(
+      'user ' + userObj.login
+    );
 
-    if (isLocalStorageUsers !== null) {
-      const isArrayUsersFromLocalStorage: Array<IUser> =
-        JSON.parse(isLocalStorageUsers);
-
-      const isUserExists: IUser | undefined = isArrayUsersFromLocalStorage.find(
-        (user: IUser): boolean => user.login === userObj.login
-      );
-      if (isUserExists) {
-        this.messageService.add({
-          severity: 'error',
-          detail: 'user with this login is already registered',
-        });
-      } else {
-        isArrayUsersFromLocalStorage.push(userObj);
-        localStorage.setItem(
-          'user',
-          JSON.stringify(isArrayUsersFromLocalStorage)
-        );
-        this.messageService.add({
-          severity: 'success',
-          detail: 'registration complete',
-        });
-      }
+    if (isLocalStorageUser !== null) {
+      this.messageService.add({
+        severity: 'error',
+        detail: 'user with this login is already registered',
+      });
     } else {
-      localStorage.setItem('user', JSON.stringify([userObj]));
+      localStorage.setItem('user ' + userObj.login, JSON.stringify(userObj));
       this.messageService.add({
         severity: 'success',
         detail: 'registration complete',
