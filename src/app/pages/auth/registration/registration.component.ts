@@ -14,6 +14,7 @@ export class RegistrationComponent {
   pswRepeat: string = '';
   email: string = '';
   cardNumber: string = '';
+  saveToLocalStorage: boolean = false;
 
   constructor(
     private messageService: MessageService,

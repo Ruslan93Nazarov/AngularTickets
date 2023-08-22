@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../services/auth/auth.service';
 import { IUser } from '../../../models/users';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-authorization',
@@ -16,16 +17,30 @@ export class AuthorizationComponent implements OnInit {
   checked: boolean = false;
   authTextButton: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
     this.authTextButton = 'Authorization';
   }
-  onAuth(ev: Event): void {
+  onAuth(ev: Event): boolean {
     const authUser: IUser = {
       login: this.login,
       psw: this.login,
     };
-    this.authService.checkUser(authUser);
+    if (this.authService.checkUser(authUser)) {
+      this.messageService.add({
+        severity: 'success',
+        detail: 'successful login',
+      });
+      return true;
+    }
+    this.messageService.add({
+      severity: 'error',
+      detail: 'invalid login',
+    });
+    return false;
   }
 }
