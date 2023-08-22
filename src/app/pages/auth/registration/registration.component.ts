@@ -21,7 +21,7 @@ export class RegistrationComponent {
     private authService: AuthService
   ) {}
 
-  registration(ev: Event): void | boolean {
+  registrationToLocalStorage(ev: Event): void | boolean {
     if (this.psw !== this.pswRepeat) {
       this.messageService.add({
         severity: 'error',
@@ -36,16 +36,37 @@ export class RegistrationComponent {
       login: this.login,
       email: this.email,
     };
-    if (!this.authService.isUserExists(userObj)) {
-      this.authService.setUser(userObj);
+
+    const isLocalStorageUsers: string | null = localStorage.getItem('user');
+
+    if (isLocalStorageUsers !== null) {
+      const isArrayUsersFromLocalStorage: Array<IUser> =
+        JSON.parse(isLocalStorageUsers);
+
+      const isUserExists: IUser | undefined = isArrayUsersFromLocalStorage.find(
+        (user: IUser): boolean => user.login === userObj.login
+      );
+      if (isUserExists) {
+        this.messageService.add({
+          severity: 'error',
+          detail: 'user with this login is already registered',
+        });
+      } else {
+        isArrayUsersFromLocalStorage.push(userObj);
+        localStorage.setItem(
+          'user',
+          JSON.stringify(isArrayUsersFromLocalStorage)
+        );
+        this.messageService.add({
+          severity: 'success',
+          detail: 'registration complete',
+        });
+      }
+    } else {
+      localStorage.setItem('user', JSON.stringify([userObj]));
       this.messageService.add({
         severity: 'success',
         detail: 'registration complete',
-      });
-    } else {
-      this.messageService.add({
-        severity: 'error',
-        detail: 'user with this login is already registered',
       });
     }
   }
