@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../services/auth/auth.service';
 import { IUser } from '../../../models/users';
 import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-authorization',
@@ -19,23 +20,27 @@ export class AuthorizationComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.authTextButton = 'Authorization';
   }
+
   onAuth(ev: Event): boolean {
     const authUser: IUser = {
       login: this.login,
       psw: this.psw,
     };
+
     if (this.authService.checkUser(authUser)) {
       if (this.authService.checkUserPsw(authUser)) {
         this.messageService.add({
           severity: 'success',
           detail: 'successful login',
         });
+        this.router.navigate(['tickets/tickets-list']);
         return true;
       } else {
         this.messageService.add({
