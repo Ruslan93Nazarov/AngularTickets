@@ -8,6 +8,8 @@ import { FooterComponent } from './footer/footer.component';
 import { TicketsListComponent } from './tickets-list/tickets-list.component';
 import { AsideComponent } from './aside/aside.component';
 import { MenubarModule } from 'primeng/menubar';
+import {DropdownModule} from "primeng/dropdown";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -17,6 +19,6 @@ import { MenubarModule } from 'primeng/menubar';
     TicketsListComponent,
     AsideComponent,
   ],
-  imports: [CommonModule, TicketsRoutingModule, MenubarModule],
+  imports: [CommonModule, TicketsRoutingModule, MenubarModule,DropdownModule,FormsModule],
 })
 export class TicketsModule {}

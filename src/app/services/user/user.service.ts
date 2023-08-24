@@ -15,12 +15,10 @@ export class UserService {
 
 
   getUser():IUser {
-    console.log(this.user)
     return this.user
   }
 
   serUser(user: IUser): void {
-    console.log(user)
    this.user = user
   }
 }
