@@ -3,6 +3,7 @@ import { AuthService } from '../../../services/auth/auth.service';
 import { IUser } from '../../../models/users';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import {UserService} from "../../../services/user/user.service";
 
 @Component({
   selector: 'app-authorization',
@@ -21,7 +22,8 @@ export class AuthorizationComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -40,6 +42,7 @@ export class AuthorizationComponent implements OnInit {
           severity: 'success',
           detail: 'successful login',
         });
+        this.userService.serUser(authUser)
         this.router.navigate(['tickets/tickets-list']);
         return true;
       } else {

@@ -3,8 +3,10 @@
     <p-menubar [model]="items"></p-menubar>
   </div>
 
-  <div class="time-block">
+  <div class="time-block d-flex flex-column">
     <div>{{ time | date : "HH:mm:ss" }}</div>
     <p class="timer-day p-0 m-0">{{ time | date : "EEEE" }}</p>
+    <p>{{user.login}}</p>
   </div>
+
 </div>
